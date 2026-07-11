@@ -233,7 +233,7 @@ toast.success(
                   data-testid="contact-submit"
                   className="w-full inline-flex items-center justify-center gap-2 bg-sage-600 hover:bg-sage-700 disabled:opacity-60 text-white rounded-full px-6 py-4 text-[15px] font-medium transition-all hover:-translate-y-0.5 hover:shadow-lift"
                 >
-                  {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Sending…</> : "Send message"}
+                 
                 </button>
               </form>
             )}
