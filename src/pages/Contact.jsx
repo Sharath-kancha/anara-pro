@@ -227,14 +227,14 @@ toast.success(
                   <label className="text-xs text-ink-muted">Message</label>
                   <textarea rows={5} className="anara-input mt-1.5 resize-none" value={form.message} onChange={update("message")} placeholder="Anything we should know before we get in touch…" data-testid="contact-message" />
                 </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  data-testid="contact-submit"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-sage-600 hover:bg-sage-700 disabled:opacity-60 text-white rounded-full px-6 py-4 text-[15px] font-medium transition-all hover:-translate-y-0.5 hover:shadow-lift"
-                >
-                 
-                </button>
+              <button
+  type="submit"
+  disabled={loading}
+  data-testid="contact-submit"
+  className="w-full inline-flex items-center justify-center gap-2 bg-sage-600 hover:bg-sage-700 disabled:opacity-60 text-white rounded-full px-6 py-4 text-[15px] font-medium transition-all hover:-translate-y-0.5 hover:shadow-lift"
+>
+  {loading ? "Sending..." : "Send Message"}
+</button>
               </form>
             )}
           </div>
