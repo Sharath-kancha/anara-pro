@@ -7,8 +7,6 @@ import {
   MessageCircle,
   MapPin,
   Clock,
-  Loader2,
-  CheckCircle2,
 } from "lucide-react";
 //import SectionHeading from "../components/SectionHeading";
 import { BRAND, SERVICES } from "../lib/brand";
