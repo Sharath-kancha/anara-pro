@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/anara-pro/static/css/main.eb2370b0.css",
+    "main.js": "/anara-pro/static/js/main.6b64abc0.js",
+    "index.html": "/anara-pro/index.html",
+    "main.eb2370b0.css.map": "/anara-pro/static/css/main.eb2370b0.css.map",
+    "main.6b64abc0.js.map": "/anara-pro/static/js/main.6b64abc0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.eb2370b0.css",
+    "static/js/main.6b64abc0.js"
+  ]
+}
