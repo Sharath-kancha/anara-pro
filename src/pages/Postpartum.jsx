@@ -74,7 +74,7 @@ export default function Postpartum() {
   heroTitle="Supporting mothers through"
   heroEmph="every transition."
   heroSubtitle="Compassionate postpartum care for new mothers — with emotional support, mental wellness guidance, newborn care and professional consultations throughout your recovery."
-  heroImage="/images/postpartum-hero.png"
+  heroImage="${process.env.PUBLIC_URL}/images/postpartum-hero.png"
   features={features}
   inclusions={inclusions}
   faqs={faqs}

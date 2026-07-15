@@ -28,7 +28,7 @@ export const SERVICES = [
     description:
       "Reliable in-home childcare with trained, background-verified babysitters who treat your child like family.",
     image:
-      "/images/babysitting-hero.png",
+      "${process.env.PUBLIC_URL}/images/babysitting-hero.png",
     accent: "from-sage-100 to-ivory-100",
   },
   {
@@ -39,7 +39,7 @@ export const SERVICES = [
     description:
       "Dignified, attentive elder care — companionship, mobility support, medication reminders and gentle daily assistance.",
     image:
-      "/images/elder-care-hero.png",
+      "${process.env.PUBLIC_URL}/images/elder-care-hero.png",
     accent: "from-ivory-200 to-sage-50",
   },
   {
@@ -50,7 +50,7 @@ export const SERVICES = [
     description:
       "Licensed therapists for individuals, couples and families — for stress, anxiety, relationships and everyday wellbeing.",
     image:
-      "/images/therapy-hero.png",
+      "${process.env.PUBLIC_URL}/images/therapy-hero.png",
     accent: "from-sage-50 to-ivory-200",
   },
   {
@@ -61,7 +61,7 @@ export const SERVICES = [
     description:
       "Emotional, physical and mental wellness support for new mothers — with empathy, privacy and professional guidance.",
     image:
-      "/images/postpartum-hero.png",
+      "${process.env.PUBLIC_URL}/images/postpartum-hero.png",
     accent: "from-ivory-100 to-sage-100",
   },
 ];
