@@ -38,7 +38,7 @@ export default function ElderCare() {
   heroTitle="Compassionate care for"
   heroEmph="loved ones."
   heroSubtitle="Compassionate, dignified in-home support for seniors — from daily assistance and companionship to mobility support and family coordination, helping your loved ones live safely and comfortably."
-  heroImage="${process.env.PUBLIC_URL}/images/elder-care-hero.png"
+ heroImage={`${process.env.PUBLIC_URL}/images/elder-care-hero.png`}
   features={features}
   inclusions={inclusions}
   faqs={faqs}

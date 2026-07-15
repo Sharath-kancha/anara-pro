@@ -27,8 +27,7 @@ export const SERVICES = [
     short: "Trained, verified caregivers for modern families.",
     description:
       "Reliable in-home childcare with trained, background-verified babysitters who treat your child like family.",
-    image:
-      "${process.env.PUBLIC_URL}/images/babysitting-hero.png",
+    image: `${process.env.PUBLIC_URL}/images/babysitting-hero.png`,
     accent: "from-sage-100 to-ivory-100",
   },
   {
@@ -38,8 +37,7 @@ export const SERVICES = [
     short: "Compassionate companionship & daily support.",
     description:
       "Dignified, attentive elder care — companionship, mobility support, medication reminders and gentle daily assistance.",
-    image:
-      "${process.env.PUBLIC_URL}/images/elder-care-hero.png",
+    image: `${process.env.PUBLIC_URL}/images/elder-care-hero.png`,
     accent: "from-ivory-200 to-sage-50",
   },
   {
@@ -49,8 +47,7 @@ export const SERVICES = [
     short: "Confidential mental wellness, on your terms.",
     description:
       "Licensed therapists for individuals, couples and families — for stress, anxiety, relationships and everyday wellbeing.",
-    image:
-      "${process.env.PUBLIC_URL}/images/therapy-hero.png",
+    image: `${process.env.PUBLIC_URL}/images/therapy-hero.png`,
     accent: "from-sage-50 to-ivory-200",
   },
   {
@@ -60,8 +57,7 @@ export const SERVICES = [
     short: "Care for mothers, through every transition.",
     description:
       "Emotional, physical and mental wellness support for new mothers — with empathy, privacy and professional guidance.",
-    image:
-      "${process.env.PUBLIC_URL}/images/postpartum-hero.png",
+    image: `${process.env.PUBLIC_URL}/images/postpartum-hero.png`,
     accent: "from-ivory-100 to-sage-100",
   },
 ];

@@ -134,9 +134,10 @@ export default function Home() {
               className="relative"
             >
               <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-lift">
-               <img
-  src="${process.env.PUBLIC_URL}/images/home-family-hero.png"
+   <img
+  src={`${process.env.PUBLIC_URL}/images/home-family-hero.png`}
   alt="Anara Lifethread family care"
+  className="w-full h-full object-cover"
 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
               </div>

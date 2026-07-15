@@ -74,7 +74,7 @@ export default function Therapy() {
   heroTitle="A confidential space for"
   heroEmph="mental wellness."
   heroSubtitle="Professional and confidential therapy for individuals, couples and families — with compassionate support for stress, anxiety, relationships and emotional wellbeing."
-  heroImage="${process.env.PUBLIC_URL}/images/therapy-hero.png"
+  heroImage={`${process.env.PUBLIC_URL}/images/therapy-hero.png`}
   features={features}
   inclusions={inclusions}
   faqs={faqs}
