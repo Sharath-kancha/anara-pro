@@ -43,10 +43,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           <Link to="/" data-testid="nav-logo-link" className="flex items-center gap-3 group">
             <div className="w-11 h-11 rounded-2xl overflow-hidden bg-white shadow-soft ring-1 ring-sage-100 flex items-center justify-center">
-              <img src={BRAND.logo} alt="Anara Life Thread" className="w-full h-full object-contain" />
+              <img src={BRAND.logo} alt="Anara Lifethread" className="w-full h-full object-contain" />
             </div>
             <div className="hidden sm:flex flex-col leading-none">
-              <span className="font-serif text-[17px] tracking-tight text-ink">{BRAND.short} <span className="text-sage-600">Life Thread</span></span>
+              <span className="font-serif text-[17px] tracking-tight text-ink">{BRAND.short} <span className="text-sage-600">Lifethread</span></span>
               <span className="text-[10.5px] uppercase tracking-[0.18em] text-ink-muted mt-1">Family Care · Hyderabad</span>
             </div>
           </Link>

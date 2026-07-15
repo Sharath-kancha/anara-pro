@@ -67,19 +67,19 @@ const faqs = [
 
 export default function Postpartum() {
   return (
-    <ServicePage
-      serviceKey="postpartum"
-      serviceTitle="Postpartum Support"
-      eyebrow="Postpartum Support"
-      heroTitle="Supporting mothers through"
-      heroEmph="every transition."
-      heroSubtitle="Emotional, mental and practical postpartum support — delivered with empathy, privacy and professional care."
-      heroImage="https://images.unsplash.com/photo-1582486225644-aeacf6aa0b1b?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
-      features={features}
-      inclusions={inclusions}
-      faqs={faqs}
-      careForLabel="About you"
-      careForPlaceholder="e.g. 6 weeks postpartum, looking for emotional support"
-    />
+   <ServicePage
+  serviceKey="postpartum"
+  serviceTitle="Postpartum Support"
+  eyebrow="Postpartum Support"
+  heroTitle="Supporting mothers through"
+  heroEmph="every transition."
+  heroSubtitle="Compassionate postpartum care for new mothers — with emotional support, mental wellness guidance, newborn care and professional consultations throughout your recovery."
+  heroImage="/images/postpartum-hero.png"
+  features={features}
+  inclusions={inclusions}
+  faqs={faqs}
+  careForLabel="About you"
+  careForPlaceholder="e.g. 6 weeks postpartum, looking for emotional support"
+/>
   );
 }

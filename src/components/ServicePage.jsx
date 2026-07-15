@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import EnquiryForm from "./EnquiryForm";
+//import EnquiryForm from "./EnquiryForm";
 import FAQAccordion from "./FAQAccordion";
 import SectionHeading from "./SectionHeading";
 

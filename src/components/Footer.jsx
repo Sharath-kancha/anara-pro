@@ -13,7 +13,7 @@ export default function Footer() {
               <img src={BRAND.logo} alt="Anara" className="w-full h-full object-contain" />
             </div>
             <div className="leading-tight">
-              <div className="font-serif text-xl text-ivory-100">Anara <span className="text-gold-500">Life Thread</span></div>
+              <div className="font-serif text-xl text-ivory-100">Anara <span className="text-gold-500">Lifethread</span></div>
               <div className="text-[11px] uppercase tracking-[0.2em] text-ivory-100/60 mt-1">Supporting Every Chapter</div>
             </div>
           </Link>
@@ -67,7 +67,7 @@ export default function Footer() {
 
       <div className="border-t border-ivory-100/10">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[13px] text-ivory-100/55">
-          <div>© {new Date().getFullYear()} Anara Life Thread. All rights reserved.</div>
+          <div>© {new Date().getFullYear()} Anara Lifethread. All rights reserved.</div>
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-gold-500" />
             Built with care in Hyderabad

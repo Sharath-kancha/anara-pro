@@ -1,6 +1,6 @@
 // Brand constants for Anara Life Thread
 export const BRAND = {
-  name: "Anara Life Thread",
+  name: "Anara Lifethread",
   short: "Anara",
   tagline: "Supporting Every Chapter of Life",
   logo: "https://customer-assets.emergentagent.com/job_e273245d-e612-4d60-bf93-edd6592c781d/artifacts/uf99ybxi_image.png",
@@ -28,7 +28,7 @@ export const SERVICES = [
     description:
       "Reliable in-home childcare with trained, background-verified babysitters who treat your child like family.",
     image:
-      "https://images.unsplash.com/photo-1581952976147-5a2d15560349?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+      "/images/babysitting-hero.png",
     accent: "from-sage-100 to-ivory-100",
   },
   {
@@ -39,7 +39,7 @@ export const SERVICES = [
     description:
       "Dignified, attentive elder care — companionship, mobility support, medication reminders and gentle daily assistance.",
     image:
-      "https://images.unsplash.com/photo-1584515933487-779824d29309?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+      "/images/elder-care-hero.png",
     accent: "from-ivory-200 to-sage-50",
   },
   {
@@ -50,7 +50,7 @@ export const SERVICES = [
     description:
       "Licensed therapists for individuals, couples and families — for stress, anxiety, relationships and everyday wellbeing.",
     image:
-      "https://images.unsplash.com/photo-1714976694867-bc0e012fab70?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+      "/images/therapy-hero.png",
     accent: "from-sage-50 to-ivory-200",
   },
   {
@@ -61,7 +61,7 @@ export const SERVICES = [
     description:
       "Emotional, physical and mental wellness support for new mothers — with empathy, privacy and professional guidance.",
     image:
-      "https://images.unsplash.com/photo-1582486225644-aeacf6aa0b1b?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400",
+      "/images/postpartum-hero.png",
     accent: "from-ivory-100 to-sage-100",
   },
 ];

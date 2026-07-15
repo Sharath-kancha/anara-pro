@@ -31,19 +31,19 @@ const faqs = [
 
 export default function ElderCare() {
   return (
-    <ServicePage
-      serviceKey="elder_care"
-      serviceTitle="Elder Care"
-      eyebrow="Elder Care"
-      heroTitle="Compassionate care for"
-      heroEmph="loved ones."
-      heroSubtitle="Dignified, attentive companionship and daily support — so your parents and elders feel seen, safe and quietly cared for."
-      heroImage="https://images.unsplash.com/photo-1584515933487-779824d29309?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
-      features={features}
-      inclusions={inclusions}
-      faqs={faqs}
-      careForLabel="About your loved one"
-      careForPlaceholder="e.g. Father, 72 yrs, needs daily companionship"
-    />
+   <ServicePage
+  serviceKey="elder_care"
+  serviceTitle="Elder Care"
+  eyebrow="Elder Care"
+  heroTitle="Compassionate care for"
+  heroEmph="loved ones."
+  heroSubtitle="Compassionate, dignified in-home support for seniors — from daily assistance and companionship to mobility support and family coordination, helping your loved ones live safely and comfortably."
+  heroImage="/images/elder-care-hero.png"
+  features={features}
+  inclusions={inclusions}
+  faqs={faqs}
+  careForLabel="About your loved one"
+  careForPlaceholder="e.g. Father, 72 yrs, needs daily companionship"
+/>
   );
 }

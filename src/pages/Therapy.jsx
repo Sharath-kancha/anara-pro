@@ -68,18 +68,18 @@ const faqs = [
 export default function Therapy() {
   return (
     <ServicePage
-      serviceKey="therapy"
-      serviceTitle="Therapy"
-      eyebrow="Therapy"
-      heroTitle="A confidential space for"
-      heroEmph="mental wellness."
-      heroSubtitle="Licensed therapists for individuals, couples and families. Calm, professional, and held with care — on your terms."
-      heroImage="https://images.unsplash.com/photo-1714976694867-bc0e012fab70?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
-      features={features}
-      inclusions={inclusions}
-      faqs={faqs}
-      careForLabel="What brings you here?"
-      careForPlaceholder="e.g. work stress, anxiety, couples support"
-    />
+  serviceKey="therapy"
+  serviceTitle="Therapy"
+  eyebrow="Therapy"
+  heroTitle="A confidential space for"
+  heroEmph="mental wellness."
+  heroSubtitle="Professional and confidential therapy for individuals, couples and families — with compassionate support for stress, anxiety, relationships and emotional wellbeing."
+  heroImage="/images/therapy-hero.png"
+  features={features}
+  inclusions={inclusions}
+  faqs={faqs}
+  careForLabel="What brings you here?"
+  careForPlaceholder="e.g. work stress, anxiety, couples support"
+/>
   );
 }

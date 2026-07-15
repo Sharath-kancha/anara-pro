@@ -37,8 +37,8 @@ export default function Babysitting() {
       eyebrow="Babysitting"
       heroTitle="Trusted childcare for"
       heroEmph="modern families."
-      heroSubtitle="In-home, verified, trained babysitters who treat your child like family — and free up the rest of your day to breathe."
-      heroImage="https://images.unsplash.com/photo-1581952976147-5a2d15560349?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
+      heroSubtitle="Safe, reliable and compassionate childcare in the comfort of your home. Anara Lifethread connects families with trained and verified babysitters who provide attentive care, engaging activities and personalized support for your child."
+     heroImage="/images/babysitting-hero.png"
       features={features}
       inclusions={inclusions}
       faqs={faqs}

@@ -31,7 +31,7 @@ export default function About() {
               <span className="serif-italic-emph">fabric of family.</span>
             </motion.h1>
             <p className="mt-8 text-lg text-ink-muted leading-relaxed max-w-2xl">
-              Anara Life Thread is being built as India's most trusted family care ecosystem — a single, gentle place to find verified babysitters, caregivers, therapists and postpartum specialists.
+              Anara Lifethread is being built as India's most trusted family care ecosystem — a single, gentle place to find verified babysitters, caregivers, therapists and postpartum specialists.
             </p>
           </div>
         </div>
@@ -118,7 +118,7 @@ export default function About() {
               The honest answer was: with great difficulty. Through forwarded WhatsApp messages, hurried referrals and a quiet hope that this time, it would work out.
             </p>
             <p>
-              Anara Life Thread was started to change that — to build, slowly and carefully, a single place where families across India can find caregivers, babysitters, therapists and postpartum specialists who are trained, verified and held to a quietly extraordinary standard.
+              Anara Lifethread was started to change that — to build, slowly and carefully, a single place where families across India can find caregivers, babysitters, therapists and postpartum specialists who are trained, verified and held to a quietly extraordinary standard.
             </p>
             <p>
               We are beginning in Hyderabad, our home. We will grow only as fast as we can stay attentive. And we will, always, design Anara around the people you love.

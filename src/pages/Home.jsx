@@ -86,7 +86,7 @@ export default function Home() {
                 <br className="hidden sm:inline" /> of life.
               </h1>
               <p className="mt-7 text-[17px] sm:text-lg text-ink-muted leading-relaxed max-w-xl">
-                From childcare and elder care to therapy and postpartum support — Anara Life Thread connects families with trained, verified and compassionate professionals.
+                From childcare and elder care to therapy and postpartum support — Anara Lifethread connects families with trained, verified and compassionate professionals.
               </p>
               <div className="mt-10 flex flex-wrap gap-3">
                 <a
@@ -134,11 +134,10 @@ export default function Home() {
               className="relative"
             >
               <div className="relative aspect-[4/5] rounded-[3rem] overflow-hidden shadow-lift">
-                <img
-                  src="https://images.unsplash.com/photo-1581952976147-5a2d15560349?crop=entropy&cs=srgb&fm=jpg&q=85&w=1400"
-                  alt="Family"
-                  className="w-full h-full object-cover"
-                />
+               <img
+  src="/images/home-family-hero.png"
+  alt="Anara Lifethread family care"
+/>
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
               </div>
 
@@ -342,7 +341,7 @@ export default function Home() {
               eyebrow="About Anara"
               title="Care that grows with"
               emph="every family."
-              subtitle="Anara Life Thread was founded on a quiet belief: that families across India deserve a single, trusted place to find care — without the chaos, the cold calls, or the compromise."
+              subtitle="Anara Lifethread was founded on a quiet belief: that families across India deserve a single, trusted place to find care — without the chaos, the cold calls, or the compromise."
             />
             <Link
               to="/about"
