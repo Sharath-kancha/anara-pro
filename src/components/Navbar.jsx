@@ -9,7 +9,7 @@ const NAV = [
   { label: "About", to: "/about" },
   { label: "Services", to: "#services", isDropdown: true },
   { label: "Careers", to: "/careers" },
-  { label: "Contact", to: "/contact" },
+  { label: "signup", to: "/saignup" },
 ];
 
 export default function Navbar() {
@@ -166,12 +166,12 @@ export default function Navbar() {
                 ))}
               </div>
               <Link
-                to="/contact"
-                data-testid="mobile-nav-book-cta"
-                className="mt-4 inline-flex items-center justify-center bg-sage-600 text-white rounded-full px-5 py-3 text-[15px] font-medium"
-              >
-                Book Consultation
-              </Link>
+  to="/signup"
+  data-testid="mobile-nav-sign-up-cta"
+  className="mt-4 inline-flex items-center justify-center bg-sage-600 text-white rounded-full px-5 py-3 text-[15px] font-medium"
+>
+  Sign Up
+</Link>
             </div>
           </motion.div>
         )}

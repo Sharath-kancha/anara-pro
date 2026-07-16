@@ -98,11 +98,11 @@ export default function Home() {
                   <ArrowRight className="w-4 h-4" />
                 </a>
                 <Link
-                  to="/contact"
+                  to="/signup"
                   data-testid="home-hero-book-cta"
                   className="inline-flex items-center gap-2 bg-white border border-sage-200 hover:border-sage-400 text-ink rounded-full px-7 py-4 text-[15px] font-medium transition-all"
                 >
-                  Book Consultation
+                  Sign Up
                 </Link>
               </div>
 
@@ -546,11 +546,11 @@ export default function Home() {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Link
-              to="/contact"
+              to="/signup"
               data-testid="final-cta-book"
               className="inline-flex items-center gap-2 bg-sage-600 hover:bg-sage-700 text-white rounded-full px-7 py-4 text-[15px] font-medium transition-all hover:-translate-y-0.5 hover:shadow-lift"
             >
-              Book Consultation
+              Sign Up
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
