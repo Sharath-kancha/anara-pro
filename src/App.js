@@ -12,6 +12,7 @@ import Careers from "./pages/Careers";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
 <Route path="/privacy" element={<Privacy />} />
 <Route path="/terms" element={<Terms />} />
 <Route path="*" element={<NotFound />} />
+<Route path="/contact" element={<Contact />} />
+<Route path="/signup" element={<Signup />} />
       </Routes>
     </Layout>
   );

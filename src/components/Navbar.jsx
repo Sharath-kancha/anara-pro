@@ -113,13 +113,13 @@ export default function Navbar() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-3">
-            <Link
-              to="/contact"
-              data-testid="nav-book-consultation-cta"
-              className="inline-flex items-center gap-2 bg-sage-600 hover:bg-sage-700 text-white rounded-full px-5 py-2.5 text-[14px] font-medium transition-all hover:-translate-y-0.5 hover:shadow-lift"
-            >
-              Book Consultation
-            </Link>
+           <Link
+  to="/signup"
+  data-testid="mobile-nav-sign-up-cta"
+  className="mt-4 inline-flex items-center justify-center bg-sage-600 text-white rounded-full px-5 py-3 text-[15px] font-medium"
+>
+  Sign Up
+</Link>
           </div>
 
           <button
