@@ -527,6 +527,45 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <section className="py-16 md:py-20 bg-white border-t border-sage-100">
+  <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+
+    <div className="text-center max-w-2xl mx-auto mb-10">
+      <p className="text-xs uppercase tracking-[0.2em] text-sage-600 mb-3">
+        Trust & Recognition
+      </p>
+
+      <h2 className="font-serif text-3xl md:text-4xl text-ink">
+        Recognised & Registered
+      </h2>
+
+      <p className="mt-3 text-ink-muted">
+        Building trusted family care with recognised registrations
+        and responsible business practices.
+      </p>
+    </div>
+<div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+
+  <div className="w-full sm:w-72 h-32 rounded-3xl border border-sage-100 bg-white flex items-center justify-center">
+    <img
+      src={`${process.env.PUBLIC_URL}/images/msme-logo.jpeg`}
+      alt="MSME Udyam Registration"
+      className="h-24 w-auto object-contain"
+    />
+  </div>
+
+  <div className="w-full sm:w-72 h-32 rounded-3xl border border-sage-100 bg-white flex items-center justify-center">
+    <img
+      src={`${process.env.PUBLIC_URL}/images/startup-india-logo.jpg`}
+      alt="Startup India"
+      className="h-24 w-auto object-contain"
+    />
+  </div>
+
+</div>
+
+  </div>
+</section>
 
       {/* ============ FINAL CTA ============ */}
       <section className="py-24 sm:py-32">
