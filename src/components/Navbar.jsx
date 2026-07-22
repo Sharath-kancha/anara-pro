@@ -9,7 +9,7 @@ const NAV = [
   { label: "About", to: "/about" },
   { label: "Services", to: "#services", isDropdown: true },
   { label: "Careers", to: "/careers" },
-  { label: "signup", to: "/saignup" },
+  
 ];
 
 export default function Navbar() {

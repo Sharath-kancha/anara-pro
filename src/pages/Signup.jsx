@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth, db } from "../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+
 import {
   Baby,
   HeartHandshake,
@@ -7,9 +12,7 @@ import {
   PersonStanding,
   ArrowLeft,
   ArrowRight,
-}
-
-from "lucide-react";
+} from "lucide-react";
 
 
 const SERVICE_OPTIONS = [
@@ -80,6 +83,28 @@ const BABYSITTING_QUESTIONS = [
       "Flexible or on-demand",
     ],
   },
+  {
+  key: "serviceLevel",
+  question:
+    "Which of the following best describes the level of service you consider essential for your family?",
+  options: [
+    "Comprehensive, all-day care with certified professionals",
+    "Dedicated part-time assistance for specific routines",
+    "Flexible care for occasional support",
+    "Basic supervision focusing on safety",
+  ],
+},
+{
+  key: "dailyRoutineHelp",
+  question:
+    "Which type of help would you prefer for your child's daily routine?",
+  options: [
+    "Basic safety only, doing the rest myself",
+    "Some help with everyday routines to keep things smooth",
+    "Total help with activities, learning, and development",
+    "Flexible, as-needed support only (on-demand help for emergencies, busy days, or irregular schedules rather than a fixed daily routine)",
+  ],
+},
 ];
 const ELDER_CARE_QUESTIONS = [
   {
@@ -122,6 +147,17 @@ const ELDER_CARE_QUESTIONS = [
       "Flexible or on-demand",
     ],
   },
+  {
+  key: "caregiver_quality",
+  question:
+    "When evaluating a caregiver's quality and reliability, what is the sign that matters most to you?",
+  options: [
+    "Their formal training and certification",
+    "The clarity of the company's safety procedures",
+    "Their direct experience in similar roles",
+    "Their compassionate approach to care",
+  ],
+},
 ];
 
 const THERAPY_QUESTIONS = [
@@ -165,6 +201,17 @@ const THERAPY_QUESTIONS = [
       "I'd like guidance",
     ],
   },
+  {
+  key: "therapy_setting",
+  question:
+    "What type of therapy setting would you be most comfortable with?",
+  options: [
+    "In-home sessions",
+    "Teletherapy sessions",
+    "Outpatient clinic visits",
+    "Group therapy sessions",
+  ],
+},
 ];
 
 const POSTPARTUM_QUESTIONS = [
@@ -208,6 +255,17 @@ const POSTPARTUM_QUESTIONS = [
       "Not sure yet",
     ],
   },
+  {
+  key: "specialist_expertise",
+  question:
+    "Is there a specific type of expertise you are looking for in a postpartum support specialist?",
+  options: [
+    "Experience with newborn care and sleep routines",
+    "Background in mental health and trauma-informed care",
+    "Lactation consultation certification",
+    "Postpartum fitness and rehabilitation knowledge",
+  ],
+},
 ];
 const QUESTIONNAIRES = {
   babysitting: BABYSITTING_QUESTIONS,
@@ -218,12 +276,24 @@ const QUESTIONNAIRES = {
 
 export default function Signup() {
   const [step, setStep] = useState(1);
+  const [signupSuccess, setSignupSuccess] = useState(false);
+  const [otp, setOtp] = useState("");
+const [otpSent, setOtpSent] = useState(false);
+const [otpVerified, setOtpVerified] = useState(false);
+const [confirmationResult, setConfirmationResult] = useState(null);
+const [otpLoading, setOtpLoading] = useState(false);
+const [otpError, setOtpError] = useState("");
 
- const [form, setForm] = useState({
+const [form, setForm] = useState({
   name: "",
   phone: "",
   email: "",
+  address: "",
+  city: "",
+  pincode: "",
   service: "",
+  numberOfChildren: "",
+  childrenAges: [],
   answers: {},
 });
   const updateForm = (field, value) => {
@@ -232,19 +302,190 @@ export default function Signup() {
       [field]: value,
     }));
   };
+const handleSendOtp = async () => {
+  try {
+    setOtpLoading(true);
+    setOtpError("");
 
-  const goToServices = (e) => {
-    e.preventDefault();
-
-    if (!form.name || !form.phone || !form.email) {
-      alert("Please enter your name, mobile number and email address.");
+    if (!form.phone) {
+      setOtpError("Please enter your mobile number.");
       return;
     }
 
-    setStep(2);
-  };
+    const phoneNumber = form.phone.startsWith("+")
+      ? form.phone
+      : `+91${form.phone}`;
+
+    // Clear old reCAPTCHA verifier before creating a new one
+   if (window.recaptchaVerifier) {
+  window.recaptchaVerifier = null;
+}
+
+    // Create a fresh reCAPTCHA verifier
+    const recaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      "recaptcha-container",
+      {
+        size: "invisible",
+      }
+    );
+
+    window.recaptchaVerifier = recaptchaVerifier;
+
+    const result = await signInWithPhoneNumber(
+      auth,
+      phoneNumber,
+      recaptchaVerifier
+    );
+
+    setConfirmationResult(result);
+    setOtpSent(true);
+  } catch (error) {
+    console.error("OTP Error:", error);
+
+    // Remove failed verifier so next attempt creates a fresh one
+    if (window.recaptchaVerifier) {
+      try {
+        window.recaptchaVerifier.clear();
+      } catch (clearError) {
+        console.log("reCAPTCHA cleanup error:", clearError);
+      }
+
+      window.recaptchaVerifier = null;
+    }
+
+    setOtpError(
+      "Could not send OTP. Please check the mobile number and try again."
+    );
+  } finally {
+    setOtpLoading(false);
+  }
+};
+const handleVerifyOtp = async () => {
+  try {
+    setOtpLoading(true);
+    setOtpError("");
+
+    if (!confirmationResult) {
+      setOtpError("Please request an OTP first.");
+      return;
+    }
+
+    if (otp.length !== 6) {
+      setOtpError("Please enter the 6-digit OTP.");
+      return;
+    }
+
+    await confirmationResult.confirm(otp);
+
+    setOtpVerified(true);
+    setOtpError("");
+  } catch (error) {
+    console.error("OTP Verification Error:", error);
+    setOtpError("Invalid OTP. Please check the code and try again.");
+  } finally {
+    setOtpLoading(false);
+  }
+};
+const handleCompleteSignup = async () => {
+  try {
+    if (!otpVerified) {
+      alert("Please verify your mobile number first.");
+      return;
+    }
+if (!auth.currentUser) {
+  alert("Your session has expired. Please verify your mobile number again.");
+  return;
+}
+    const signupData = {
+     uid: auth.currentUser?.uid,
+userId: auth.currentUser?.uid, 
+      name: form.name,
+      phone: form.phone,
+      email: form.email,
+      address: form.address,
+      city: form.city,
+      pincode: form.pincode,
+      service: form.service,
+      answers: form.answers,
+      phoneVerified: true,
+      createdAt: serverTimestamp(),
+    };
+
+    await addDoc(collection(db, "signups"), signupData);
+
+   console.log("Signup saved successfully");
+setSignupSuccess(true);
+  } catch (error) {
+    console.error("Error saving signup:", error);
+    alert("Something went wrong while saving your details. Please try again.");
+  }
+};
+const goToServices = (e) => {
+  e.preventDefault();
+
+  if (!form.name || !form.phone || !form.email) {
+    alert("Please enter your name, mobile number and email address.");
+    return;
+  }
+
+  if (!otpVerified) {
+    alert("Please verify your mobile number with OTP before continuing.");
+    return;
+  }
+
+  if (!form.address || !form.city || !form.pincode) {
+    alert("Please enter your complete address, city and PIN code.");
+    return;
+  }
+
+  if (form.pincode.length !== 6) {
+    alert("Please enter a valid 6-digit PIN code.");
+    return;
+  }
+
+  setStep(2);
+};
 const currentQuestions = QUESTIONNAIRES[form.service] || [];
+if (signupSuccess) {
   return (
+    <main className="min-h-screen bg-ivory-100 flex items-center justify-center px-6 py-24">
+      <div className="max-w-xl w-full bg-white border border-sage-100 rounded-3xl p-8 sm:p-12 text-center shadow-soft">
+
+        <div className="w-16 h-16 mx-auto rounded-full bg-sage-50 flex items-center justify-center mb-6">
+          <span className="text-sage-600 text-3xl">✓</span>
+        </div>
+
+        <span className="text-xs uppercase tracking-widest text-sage-600">
+          Registration Complete
+        </span>
+
+        <h1 className="font-serif text-3xl sm:text-4xl text-ink mt-3">
+          You're all set, {form.name}!
+        </h1>
+
+        <p className="font-serif text-xl text-ink mt-4">
+          Welcome to Anara Lifethread
+        </p>
+
+        <p className="text-ink-muted mt-4 leading-relaxed">
+          Thank you for sharing your care requirements with us. Our team will
+          review your details and connect with you shortly to help you find the
+          right care support for your family.
+        </p>
+
+        <Link
+          to="/"
+          className="mt-8 inline-flex items-center justify-center bg-sage-600 hover:bg-sage-700 text-white rounded-full px-8 py-3.5 font-medium transition-colors"
+        >
+          Back to Home
+        </Link>
+
+      </div>
+    </main>
+  );
+}  
+return (
     <main className="min-h-screen bg-ivory-100 pt-28 pb-20">
       <div className="max-w-4xl mx-auto px-6">
 
@@ -309,18 +550,82 @@ const currentQuestions = QUESTIONNAIRES[form.service] || [];
                 </div>
 
                 <div>
-                  <label className="block text-sm text-ink mb-2">
-                    Mobile Number
-                  </label>
+  <label className="block text-sm text-ink mb-2">
+    Mobile Number
+  </label>
 
-                  <input
-                    type="tel"
-                    value={form.phone}
-                    onChange={(e) => updateForm("phone", e.target.value)}
-                    placeholder="Enter your mobile number"
-                    className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
-                  />
-                </div>
+  <div className="flex gap-3">
+    <input
+      type="tel"
+      value={form.phone}
+      onChange={(e) => {
+        updateForm("phone", e.target.value);
+        setOtpVerified(false);
+        setOtpSent(false);
+      }}
+      placeholder="Enter your mobile number"
+      disabled={otpVerified}
+      className="flex-1 border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600 disabled:bg-sage-50"
+    />
+
+    {!otpVerified && (
+      <button
+        type="button"
+        onClick={handleSendOtp}
+        disabled={otpLoading || !form.phone}
+        className="px-5 py-3 rounded-2xl bg-sage-600 text-white font-medium disabled:bg-sage-200 disabled:cursor-not-allowed"
+      >
+        {otpLoading ? "Sending..." : otpSent ? "Resend OTP" : "Send OTP"}
+      </button>
+    )}
+
+    {otpVerified && (
+      <div className="flex items-center px-4 text-sage-600 font-medium">
+        ✓ Verified
+      </div>
+    )}
+  </div>
+
+  {otpError && (
+    <p className="text-sm text-red-500 mt-2">
+      {otpError}
+    </p>
+  )}
+</div>
+
+<div
+  id="recaptcha-container"
+  key={otpSent ? "otp-sent" : "otp-not-sent"}
+></div>
+
+{otpSent && !otpVerified && (
+  <div>
+    <label className="block text-sm text-ink mb-2">
+      Enter OTP
+    </label>
+
+    <div className="flex gap-3">
+      <input
+        type="text"
+        inputMode="numeric"
+        maxLength="6"
+        value={otp}
+        onChange={(e) => setOtp(e.target.value)}
+        placeholder="Enter 6-digit OTP"
+        className="flex-1 border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
+      />
+
+      <button
+        type="button"
+        onClick={handleVerifyOtp}
+        disabled={otpLoading || otp.length !== 6}
+        className="px-5 py-3 rounded-2xl bg-sage-600 text-white font-medium disabled:bg-sage-200 disabled:cursor-not-allowed"
+      >
+        {otpLoading ? "Verifying..." : "Verify OTP"}
+      </button>
+    </div>
+  </div>
+)}
 
                 <div>
                   <label className="block text-sm text-ink mb-2">
@@ -335,6 +640,50 @@ const currentQuestions = QUESTIONNAIRES[form.service] || [];
                     className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
                   />
                 </div>
+                <div>
+  <label className="block text-sm text-ink mb-2">
+    Address
+  </label>
+
+  <textarea
+    value={form.address}
+    onChange={(e) => updateForm("address", e.target.value)}
+    placeholder="Enter your complete address"
+    rows="3"
+    className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600 resize-none"
+  />
+</div>
+
+<div className="grid sm:grid-cols-2 gap-4">
+  <div>
+    <label className="block text-sm text-ink mb-2">
+      City
+    </label>
+
+    <input
+      type="text"
+      value={form.city}
+      onChange={(e) => updateForm("city", e.target.value)}
+      placeholder="Enter your city"
+      className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
+    />
+  </div>
+
+  <div>
+    <label className="block text-sm text-ink mb-2">
+      PIN Code
+    </label>
+
+    <input
+      type="text"
+      value={form.pincode}
+      onChange={(e) => updateForm("pincode", e.target.value)}
+      placeholder="Enter PIN code"
+      maxLength="6"
+      className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
+    />
+  </div>
+</div>
 
                 <button
                   type="submit"
@@ -410,6 +759,7 @@ const currentQuestions = QUESTIONNAIRES[form.service] || [];
             </p>
           </button>
         );
+        
       })}
     </div>
 
@@ -451,59 +801,128 @@ const currentQuestions = QUESTIONNAIRES[form.service] || [];
       </p>
     </div>
 
-    <div className="space-y-8">
-      {currentQuestions.map((item, index) => (
-        <div key={item.key}>
+  <div className="space-y-8">
+
+  {/* CHILDREN DETAILS - ONLY FOR BABYSITTING */}
+  {form.service === "babysitting" && (
+    <>
+      <div>
+        <h3 className="font-medium text-ink mb-4">
+          How many children do you have?
+        </h3>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[1, 2, 3, 4].map((number) => (
+            <button
+              key={number}
+              type="button"
+              onClick={() =>
+                setForm((current) => ({
+                  ...current,
+                  numberOfChildren: number,
+                  childrenAges: Array(number).fill(""),
+                }))
+              }
+              className={`rounded-2xl border px-4 py-3 text-sm transition-all ${
+                form.numberOfChildren === number
+                  ? "border-sage-600 bg-sage-50 text-sage-700"
+                  : "border-sage-100 text-ink hover:border-sage-300"
+              }`}
+            >
+              {number}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* CHILD AGE FIELDS */}
+      {form.numberOfChildren && (
+        <div>
           <h3 className="font-medium text-ink mb-4">
-            {index + 1}. {item.question}
+            {form.numberOfChildren === 1
+              ? "What is your child's age?"
+              : "What is the age of each child?"}
           </h3>
 
           <div className="grid sm:grid-cols-2 gap-3">
-            {item.options.map((option) => {
-              const selected = form.answers[item.key] === option;
+            {form.childrenAges.map((age, index) => (
+              <input
+                key={index}
+                type="number"
+                min="0"
+                max="18"
+                value={age}
+                placeholder={`Child ${index + 1} age`}
+                onChange={(e) => {
+                  const newAges = [...form.childrenAges];
+                  newAges[index] = e.target.value;
 
-              return (
-                <button
-                  key={option}
-                  type="button"
-                  onClick={() =>
-                    setForm((current) => ({
-                      ...current,
-                      answers: {
-                        ...current.answers,
-                        [item.key]: option,
-                      },
-                    }))
-                  }
-                  className={`text-left rounded-2xl border px-4 py-3 text-sm transition-all ${
-                    selected
-                      ? "border-sage-600 bg-sage-50 text-sage-700"
-                      : "border-sage-100 text-ink hover:border-sage-300"
-                  }`}
-                >
-                  {option}
-                </button>
-              );
-            })}
+                  setForm((current) => ({
+                    ...current,
+                    childrenAges: newAges,
+                  }));
+                }}
+                className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
+              />
+            ))}
           </div>
         </div>
-      ))}
+      )}
+    </>
+  )}
 
-      <button
-        type="button"
-        disabled={
-          currentQuestions.length === 0 ||
-          Object.keys(form.answers).length < currentQuestions.length
-        }
-        onClick={() => {
-          console.log("Completed signup:", form);
-          alert("Thank you! Your details have been recorded.");
-        }}
-        className="w-full bg-sage-600 disabled:bg-sage-200 disabled:cursor-not-allowed hover:bg-sage-700 text-white rounded-full py-3.5 font-medium transition-colors"
-      >
-        Complete Sign Up
-      </button>
+  {/* SERVICE QUESTIONNAIRE */}
+  {currentQuestions.map((item, index) => (
+    <div key={item.key}>
+      <h3 className="font-medium text-ink mb-4">
+        {index + 1}. {item.question}
+      </h3>
+
+      <div className="grid sm:grid-cols-2 gap-3">
+        {item.options.map((option) => {
+          const selected = form.answers[item.key] === option;
+
+          return (
+            <button
+              key={option}
+              type="button"
+              onClick={() =>
+                setForm((current) => ({
+                  ...current,
+                  answers: {
+                    ...current.answers,
+                    [item.key]: option,
+                  },
+                }))
+              }
+              className={`text-left rounded-2xl border px-4 py-3 text-sm transition-all ${
+                selected
+                  ? "border-sage-600 bg-sage-50 text-sage-700"
+                  : "border-sage-100 text-ink hover:border-sage-300"
+              }`}
+            >
+              {option}
+            </button>
+          );
+        })}
+      </div>
     </div>
+  ))}
+
+  {/* COMPLETE SIGN UP */}
+  <button
+    type="button"
+    disabled={
+      currentQuestions.length === 0 ||
+      Object.keys(form.answers).length < currentQuestions.length
+    }
+ onClick={handleCompleteSignup}
+    className="w-full bg-sage-600 disabled:bg-sage-200 disabled:cursor-not-allowed hover:bg-sage-700 text-white rounded-full py-3.5 font-medium transition-colors"
+  >
+    Complete Sign Up
+  </button>
+
+</div>
   </div>
 )}
 

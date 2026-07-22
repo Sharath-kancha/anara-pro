@@ -17,21 +17,24 @@ import Signup from "./pages/Signup";
 function App() {
   return (
     <Layout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/babysitting" element={<Babysitting />} />
-        <Route path="/elder-care" element={<ElderCare />} />
-<Route path="/therapy" element={<Therapy />} />
-<Route path="/postpartum" element={<Postpartum />} />
-<Route path="/contact" element={<Contact />} />
-<Route path="/careers" element={<Careers />} />
-<Route path="/privacy" element={<Privacy />} />
-<Route path="/terms" element={<Terms />} />
-<Route path="*" element={<NotFound />} />
-<Route path="/contact" element={<Contact />} />
-<Route path="/signup" element={<Signup />} />
-      </Routes>
+     <Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/about" element={<About />} />
+
+  <Route path="/babysitting" element={<Babysitting />} />
+  <Route path="/elder-care" element={<ElderCare />} />
+  <Route path="/therapy" element={<Therapy />} />
+  <Route path="/postpartum" element={<Postpartum />} />
+
+  <Route path="/contact" element={<Contact />} />
+  <Route path="/careers" element={<Careers />} />
+  <Route path="/signup" element={<Signup />} />
+
+  <Route path="/privacy" element={<Privacy />} />
+  <Route path="/terms" element={<Terms />} />
+
+  <Route path="*" element={<NotFound />} />
+</Routes>
     </Layout>
   );
 }
