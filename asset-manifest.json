@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/anara-pro/static/css/main.e2399c58.css",
-    "main.js": "/anara-pro/static/js/main.8048e6b2.js",
+    "main.css": "/anara-pro/static/css/main.573309e4.css",
+    "main.js": "/anara-pro/static/js/main.e0532b8f.js",
     "index.html": "/anara-pro/index.html",
-    "main.e2399c58.css.map": "/anara-pro/static/css/main.e2399c58.css.map",
-    "main.8048e6b2.js.map": "/anara-pro/static/js/main.8048e6b2.js.map"
+    "main.573309e4.css.map": "/anara-pro/static/css/main.573309e4.css.map",
+    "main.e0532b8f.js.map": "/anara-pro/static/js/main.e0532b8f.js.map"
   },
   "entrypoints": [
-    "static/css/main.e2399c58.css",
-    "static/js/main.8048e6b2.js"
+    "static/css/main.573309e4.css",
+    "static/js/main.e0532b8f.js"
   ]
 }
