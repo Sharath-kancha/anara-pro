@@ -396,6 +396,25 @@ const handleCompleteSignup = async () => {
       alert("Please verify your mobile number first.");
       return;
     }
+    if (form.service === "babysitting") {
+  if (!form.numberOfChildren) {
+    alert("Please select the number of children.");
+    return;
+  }
+
+  const agesComplete =
+    form.childrenAges?.length === form.numberOfChildren &&
+    form.childrenAges.every((age) => age !== "");
+
+  const gendersComplete =
+    form.childrenGenders?.length === form.numberOfChildren &&
+    form.childrenGenders.every((gender) => gender !== "");
+
+  if (!agesComplete || !gendersComplete) {
+    alert("Please enter the age and gender for each child.");
+    return;
+  }
+}
 if (!auth.currentUser) {
   alert("Your session has expired. Please verify your mobile number again.");
   return;
