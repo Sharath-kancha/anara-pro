@@ -294,6 +294,7 @@ const [form, setForm] = useState({
   service: "",
   numberOfChildren: "",
   childrenAges: [],
+  childrenGenders: [],
   answers: {},
 });
   const updateForm = (field, value) => {
@@ -316,47 +317,49 @@ const handleSendOtp = async () => {
       ? form.phone
       : `+91${form.phone}`;
 
-    // Clear old reCAPTCHA verifier before creating a new one
-   if (window.recaptchaVerifier) {
-  window.recaptchaVerifier = null;
-}
-
-    // Create a fresh reCAPTCHA verifier
-    const recaptchaVerifier = new RecaptchaVerifier(
-      auth,
-      "recaptcha-container",
-      {
-        size: "invisible",
-      }
-    );
-
-    window.recaptchaVerifier = recaptchaVerifier;
+    // Reuse existing verifier instead of creating reCAPTCHA repeatedly
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+        }
+      );
+    }
 
     const result = await signInWithPhoneNumber(
       auth,
       phoneNumber,
-      recaptchaVerifier
+      window.recaptchaVerifier
     );
 
     setConfirmationResult(result);
     setOtpSent(true);
+    setOtpError("");
+
   } catch (error) {
     console.error("OTP Error:", error);
 
-    // Remove failed verifier so next attempt creates a fresh one
-    if (window.recaptchaVerifier) {
-      try {
-        window.recaptchaVerifier.clear();
-      } catch (clearError) {
-        console.log("reCAPTCHA cleanup error:", clearError);
+    // Reset reCAPTCHA if Firebase provides the widget ID
+    try {
+      if (
+        window.recaptchaVerifier &&
+        window.recaptchaVerifier.widgetId !== null &&
+        window.grecaptcha
+      ) {
+        window.grecaptcha.reset(
+          window.recaptchaVerifier.widgetId
+        );
       }
-
-      window.recaptchaVerifier = null;
+    } catch (resetError) {
+      console.log("reCAPTCHA reset error:", resetError);
     }
 
     setOtpError(
       "Could not send OTP. Please check the mobile number and try again."
     );
+
   } finally {
     setOtpLoading(false);
   }
@@ -407,6 +410,14 @@ userId: auth.currentUser?.uid,
       city: form.city,
       pincode: form.pincode,
       service: form.service,
+      numberOfChildren:
+  form.service === "babysitting" ? form.numberOfChildren : null,
+
+childrenAges:
+  form.service === "babysitting" ? form.childrenAges : [],
+
+childrenGenders:
+  form.service === "babysitting" ? form.childrenGenders : [],
       answers: form.answers,
       phoneVerified: true,
       createdAt: serverTimestamp(),
@@ -804,73 +815,109 @@ return (
   <div className="space-y-8">
 
   {/* CHILDREN DETAILS - ONLY FOR BABYSITTING */}
-  {form.service === "babysitting" && (
-    <>
+ {form.service === "babysitting" && (
+  <>
+    {/* NUMBER OF CHILDREN */}
+    <div>
+      <h3 className="font-medium text-ink mb-4">
+        How many children do you have?
+      </h3>
+
+      <div className="grid grid-cols-3 gap-3">
+        {[1, 2, 3].map((number) => (
+          <button
+            key={number}
+            type="button"
+            onClick={() =>
+              setForm((current) => ({
+                ...current,
+                numberOfChildren: number,
+                childrenAges: Array(number).fill(""),
+                childrenGenders: Array(number).fill(""),
+              }))
+            }
+            className={`rounded-2xl border px-4 py-3 text-sm transition-all ${
+              form.numberOfChildren === number
+                ? "border-sage-600 bg-sage-50 text-sage-700"
+                : "border-sage-100 text-ink hover:border-sage-300"
+            }`}
+          >
+            {number}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* CHILD AGE AND GENDER */}
+    {form.numberOfChildren && (
       <div>
         <h3 className="font-medium text-ink mb-4">
-          How many children do you have?
+          Tell us about your{" "}
+          {form.numberOfChildren === 1 ? "child" : "children"}
         </h3>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[1, 2, 3, 4].map((number) => (
-            <button
-              key={number}
-              type="button"
-              onClick={() =>
-                setForm((current) => ({
-                  ...current,
-                  numberOfChildren: number,
-                  childrenAges: Array(number).fill(""),
-                }))
-              }
-              className={`rounded-2xl border px-4 py-3 text-sm transition-all ${
-                form.numberOfChildren === number
-                  ? "border-sage-600 bg-sage-50 text-sage-700"
-                  : "border-sage-100 text-ink hover:border-sage-300"
-              }`}
+        <div className="space-y-4">
+          {Array.from({ length: form.numberOfChildren }).map((_, index) => (
+            <div
+              key={index}
+              className="rounded-2xl border border-sage-100 p-4"
             >
-              {number}
-            </button>
+              <p className="text-sm font-medium text-ink mb-3">
+                Child {index + 1}
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  min="0"
+                  max="18"
+                  value={form.childrenAges?.[index] || ""}
+                  placeholder={`Child ${index + 1} age`}
+                  onChange={(e) => {
+                    const newAges = [
+                      ...(form.childrenAges || Array(form.numberOfChildren).fill("")),
+                    ];
+
+                    newAges[index] = e.target.value;
+
+                    setForm((current) => ({
+                      ...current,
+                      childrenAges: newAges,
+                    }));
+                  }}
+                  className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
+                />
+
+                <select
+                  value={form.childrenGenders?.[index] || ""}
+                  onChange={(e) => {
+                    const newGenders = [
+                      ...(form.childrenGenders ||
+                        Array(form.numberOfChildren).fill("")),
+                    ];
+
+                    newGenders[index] = e.target.value;
+
+                    setForm((current) => ({
+                      ...current,
+                      childrenGenders: newGenders,
+                    }));
+                  }}
+                  className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600 bg-white"
+                >
+                  <option value="">Select gender</option>
+                  <option value="Male">Boy</option>
+                  <option value="Female">Girl</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+              </div>
+            </div>
           ))}
         </div>
       </div>
-
-      {/* CHILD AGE FIELDS */}
-      {form.numberOfChildren && (
-        <div>
-          <h3 className="font-medium text-ink mb-4">
-            {form.numberOfChildren === 1
-              ? "What is your child's age?"
-              : "What is the age of each child?"}
-          </h3>
-
-          <div className="grid sm:grid-cols-2 gap-3">
-            {form.childrenAges.map((age, index) => (
-              <input
-                key={index}
-                type="number"
-                min="0"
-                max="18"
-                value={age}
-                placeholder={`Child ${index + 1} age`}
-                onChange={(e) => {
-                  const newAges = [...form.childrenAges];
-                  newAges[index] = e.target.value;
-
-                  setForm((current) => ({
-                    ...current,
-                    childrenAges: newAges,
-                  }));
-                }}
-                className="w-full border border-sage-100 rounded-2xl px-4 py-3 outline-none focus:border-sage-600"
-              />
-            ))}
-          </div>
-        </div>
-      )}
-    </>
-  )}
-
+    )}
+  </>
+)}
   {/* SERVICE QUESTIONNAIRE */}
   {currentQuestions.map((item, index) => (
     <div key={item.key}>
