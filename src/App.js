@@ -13,6 +13,8 @@ import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Signup from "./pages/Signup";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
   <Route path="/terms" element={<Terms />} />
 
   <Route path="*" element={<NotFound />} />
+  <Route path="/admin-login" element={<AdminLogin />} />
+  <Route path="/admin" element={<AdminDashboard />} />
 </Routes>
     </Layout>
   );
